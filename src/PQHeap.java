@@ -3,17 +3,24 @@ import java.util.*;
 public class PQHeap implements PQ {
 
 	public static void main(String[] args) {
-
+		PQHeap pq = new PQHeap(5);
+		System.out.println(pq);
 		// Bruges kun til test
 
 	}// end of main method
 	
 	
-	PQHeap(int maxElms) {
 
-	}
 
 	
+	public PQHeap(int maxElms) {
+		PriorityQueue<Element> pq = new PriorityQueue<>(maxElms);
+	}
+
+
+
+
+
 	@Override
 	public Element extractMin() {
 		// TODO Auto-generated method stub
