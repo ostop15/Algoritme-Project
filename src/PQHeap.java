@@ -9,13 +9,29 @@ public class PQHeap implements PQ {
 
 	}// end of main method
 	
-	
 
 
 	
 	public PQHeap(int maxElms) {
-		PriorityQueue<Element> pq = new PriorityQueue<>(maxElms);
-	}
+		PriorityQueue < Integer >  prq = new PriorityQueue < Integer > (); 
+			       
+			   // insert values in the queue
+			   for ( int i = 1; i  <  10; i++ ){  
+			   prq.add (new Integer (i)) ;  
+			   }
+			      
+			   System.out.println ( "Initial priority queue values are: "+ prq);
+			      
+			   // get the head from the queue
+			   Integer head = prq.poll();
+			   System.out.println ( "Head of the queue is: "+ head);
+			   System.out.println ( "Priority queue values after poll: "+ prq);
+
+			   Integer peek = prq.peek();
+			   System.out.println ( "Peek of the queue is: "+ peek);
+			      
+			   System.out.println ( "Priority queue values after poll: "+ prq);
+			   }
 
 
 
