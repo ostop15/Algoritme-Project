@@ -6,6 +6,9 @@ public class HeapSort
 	{
         List<Integer> arr = new ArrayList<Integer>();;
 		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("Please insert numbers to sort:");
+		
 		while (sc.hasNextInt()) {
 	    	arr.add(sc.nextInt());
 		}
@@ -14,10 +17,10 @@ public class HeapSort
         arr = Sort(arr);
 
 		System.out.println("Sorted:");
-		String str = "|";
+		String str = " | ";
 		for (int k=0; k<arr.size(); k++)
 		{
-			str += arr.get(k) + "|";
+			str += arr.get(k) + " | ";
 		}
 		System.out.println(str);
 	}
