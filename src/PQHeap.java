@@ -7,22 +7,27 @@ public class PQHeap implements PQ {
 		// Bruges kun til test
 
 	}// end of main method
+	
+	
+	PQHeap(int maxElms) {
 
+	}
+
+	
 	@Override
 	public Element extractMin() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	
 	@Override
 	public void insert(Element e) {
 		// TODO Auto-generated method stub
 
 	}
+	
 
-	PQHeap(int maxElms) {
-
-	}
 
 	private static int[] replace(int i, int smallest, int[] heap) {
 		int aux = heap[i];
