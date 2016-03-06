@@ -1,19 +1,30 @@
 import java.util.*;
 
-public class PQHeap implements PQ{
-	
+public class PQHeap implements PQ {
+
 	public static void main(String[] args) {
-		
+
 		// Bruges kun til test
-		
-	}//end of main method
-	
-	
-	PQHeap(int maxElms){
-		
+
+	}// end of main method
+
+	@Override
+	public Element extractMin() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	public static int[] replace(int i, int smallest, int[] heap) {
+	@Override
+	public void insert(Element e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	PQHeap(int maxElms) {
+
+	}
+
+	private static int[] replace(int i, int smallest, int[] heap) {
 		int aux = heap[i];
 		heap[i] = heap[smallest];
 		heap[smallest] = aux;
@@ -21,12 +32,12 @@ public class PQHeap implements PQ{
 		return heap;
 	}
 
-	public static int getLeft(int i) {
+	private static int getLeft(int i) {
 		return 2 * i;
 
 	}
 
-	public static int getRight(int i) {
+	private static int getRight(int i) {
 		return (2 * i) + 1;
 
 	}
@@ -53,17 +64,4 @@ public class PQHeap implements PQ{
 		}
 	}
 
-
-	@Override
-	public Element extractMin() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public void insert(Element e) {
-		// TODO Auto-generated method stub
-		
-	}
 } // end of class
