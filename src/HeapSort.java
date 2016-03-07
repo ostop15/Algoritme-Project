@@ -4,13 +4,13 @@ public class HeapSort
 {
     public static void main(String[] args) 
 	{
-        List<Integer> arr = new ArrayList<Integer>();;
+        List<Element> arr = new ArrayList<Element>();
 		Scanner sc = new Scanner(System.in);
 		
 		System.out.println("Please insert numbers to sort:");
 		
 		while (sc.hasNextInt()) {
-	    	arr.add(sc.nextInt());
+	    	arr.add(new Element(sc.nextInt(), null));
 		}
 		//arr = MinHeapify(0, arr, 10);
 		//arr = BuildMinHeap(arr);
@@ -20,20 +20,21 @@ public class HeapSort
 		String str = " | ";
 		for (int k=0; k<arr.size(); k++)
 		{
-			str += arr.get(k) + " | ";
+			str += arr.get(k).key + " | ";
 		}
 		System.out.println(str);
 	}
 
-    public static List<Integer> replace( int i, int j, List<Integer> rep)
+    public static List<Element> replace( int i, int j, List<Element> rep)
 	{
-        int aux = rep.get(i);
-		rep.set(i,rep.get(j));
-		rep.set(j,aux);
+        int aux = rep.get(i).key;
+        Object aux2 = rep.get(i).data;
+		rep.set(i, new Element(rep.get(j).key, rep.get(j).data));
+		rep.set(j, new Element(aux, aux2));
         return rep;
 	}
 
-	public static List<Integer> Sort(List<Integer> tmp) 
+	public static List<Element> Sort(List<Element> tmp) 
 	{
 		tmp = BuildMinHeap(tmp);
 		int l = tmp.size();
@@ -46,7 +47,7 @@ public class HeapSort
 		return tmp;
 	}
 
-	public static List<Integer> BuildMinHeap(List<Integer> tmp)
+	public static List<Element> BuildMinHeap(List<Element> tmp)
 	{
 		for (int i=(int)Math.floor(tmp.size()/2)-1; i>-1; i--)
 		{
@@ -55,14 +56,14 @@ public class HeapSort
 		return tmp;
 	}
 
-	public static List<Integer> MinHeapify(int i, List<Integer> tmp, int heapsize) 
+	public static List<Element> MinHeapify(int i, List<Element> tmp, int heapsize) 
 	{
 		
 		int smallest;
 		int left = 2*(i+1)-1;
 		int right = 2*(i+1)+1-1;
 
-		if (left < heapsize && tmp.get(left) <= tmp.get(i)) 
+		if (left < heapsize && tmp.get(left).key <= tmp.get(i).key) 
 		{
 		    smallest = left;
 		} 
@@ -71,7 +72,7 @@ public class HeapSort
 		    smallest = i;
 		}
 
-		if (right < heapsize && tmp.get(right) <= tmp.get(smallest)) 
+		if (right < heapsize && tmp.get(right).key <= tmp.get(smallest).key) 
 		{
 		    smallest = right;
 		}
