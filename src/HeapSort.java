@@ -12,7 +12,7 @@ public class HeapSort {
 		ArrayList<Element> tA = new ArrayList<>(); //Temporary input storage
 		int count = 0; //Counts inputs
 		
-		System.out.println("Please input 5 numbers to sort:");
+		System.out.println("Please input the numbers you want sorted:");
 		
 		while (sc.hasNextInt()) {
 			tA.add(new Element(sc.nextInt(), null));
