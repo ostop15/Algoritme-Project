@@ -18,9 +18,10 @@ public class PQHeap implements PQ{
 
 		
 		Q.insert(new Element(6,null));
-		System.out.println("\n\n\n");
-		for(int i = 0; i < Q.size();i++)
-		System.out.println(Q.get(i));
+		Q.printAll();
+		
+		Q.extractMin();
+		Q.printAll();
 
 	}// end of main method
 	
@@ -36,7 +37,7 @@ public class PQHeap implements PQ{
 		Element min = array.get(0); // Store the first element
 		array.set(0, array.get(array.size()-1)); //Replace the first element with the last
 		array.remove(array.size()-1); // Delete the last element
-		minHeapify(0,array.size()-1);
+		minHeapify(0,array.size()-1); // Heapify the array
 		
 		return min;
 	}
@@ -102,6 +103,12 @@ public class PQHeap implements PQ{
 	
 	public int get(int i){
 		return array.get(i).key;
+	}
+	
+	public void printAll(){
+	for(int i = 0; i < array.size();i++)
+	System.out.println(array.get(i).key);
+	System.out.println();
 	}
 
 } // end of class
