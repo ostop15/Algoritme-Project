@@ -25,14 +25,6 @@ public class PQHeap implements PQ{
 	}// end of main method
 	
 	private static ArrayList<Element> array;
-	
-	public int size(){
-		return array.size();
-	}
-	
-	public int get(int i){
-		return array.get(i).key;
-	}
 
 	public PQHeap(int maxElms) {
 		array = new ArrayList<>(maxElms);
@@ -56,16 +48,15 @@ public class PQHeap implements PQ{
 		int i = array.size()-1; //index of the last element
 		int parent = (int) Math.floor(i/2); // index of parent
 
-		while ( i>0 && array.get(parent).key > array.get(i).key ){
-			System.out.println();
-			for(int j = 0; j < array.size();j++)
-				System.out.println(array.get(j).key);			
-			
+		// Rearrange the queue, if the new element is smaller than its parents
+		while ( i>0 && array.get(parent).key > array.get(i).key ){				
 			replace(i,parent);
 			i = parent;
 			parent = (int) Math.floor(i/2);
 		}
-	}
+		
+	} // end of insert method
+	
 
 	public static ArrayList<Element> minHeapify(int i, int heapsize) 
 	{
@@ -104,5 +95,13 @@ public class PQHeap implements PQ{
 		array.set(parent, aux);
         
 	} // end of replace
+	
+	public int size(){
+		return array.size();
+	}
+	
+	public int get(int i){
+		return array.get(i).key;
+	}
 
 } // end of class
