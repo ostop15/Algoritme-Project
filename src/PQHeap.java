@@ -4,11 +4,11 @@ public class PQHeap implements PQ{
 	
 	public static void main(String[] args) {
 		PQHeap Q = new PQHeap(100);
-		Element e = new Element(5, null);
-		Element f = new Element(4, null);
+		Element e = new Element(1, null);
+		Element f = new Element(2, null);
 		Element g = new Element(3, null);
-		Element h = new Element(2, null);
-		Element ik = new Element(1, null);
+		Element h = new Element(4, null);
+		Element ik = new Element(5, null);
 
 		Q.insert(e);
 		Q.insert(f);
@@ -64,9 +64,9 @@ public class PQHeap implements PQ{
 		
 		int smallest;
 		int left = 2*(i+1)-1;
-		int right = 2*(i+1)+1-1;
+		int right = 2*(i+1);
 
-		if (left < heapsize && array.get(left).key <= array.get(i).key) 
+		if (left < heapsize && array.get(left).key < array.get(i).key) 
 		{
 		    smallest = left;
 		} 
@@ -75,7 +75,7 @@ public class PQHeap implements PQ{
 		    smallest = i;
 		}
 
-		if (right < heapsize && array.get(right).key <= array.get(smallest).key) 
+		if (right < heapsize && array.get(right).key < array.get(smallest).key) 
 		{
 		    smallest = right;
 		}
@@ -112,3 +112,4 @@ public class PQHeap implements PQ{
 	}
 
 } // end of class
+
