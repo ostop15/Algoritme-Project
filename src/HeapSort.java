@@ -4,59 +4,48 @@ public class HeapSort
 {
     public static void main(String[] args) 
 	{
-        List<Element> arr = new ArrayList<Element>();
+        PQHeap Q = new PQHeap(5);
 		Scanner sc = new Scanner(System.in);
 		
 		System.out.println("Please input numbers to sort:");
 		
 		while (sc.hasNextInt()) {
-	    	arr.add(new Element(sc.nextInt(), null));
+	    	Q.insert(new Element(sc.nextInt(), null));
 		}
-		//arr = MinHeapify(0, arr, 10);
-		//arr = BuildMinHeap(arr);
-        arr = Sort(arr);
+		//Q = MinHeapify(0, Q, 10);
+		//Q = BuildMinHeap(Q);
+        Q = Sort(Q);
 
 		System.out.println("Sorted:");
 		String str = " | ";
-		for (int k=0; k<arr.size(); k++)
+		for (int k=0; k<Q.size(); k++)
 		{
-			str += arr.get(k).key + " | ";
+			str += Q.get(k)+ " | ";
 		}
 		System.out.println(str);
 	}
 
-    public static List<Element> replace( int i, int j, List<Element> rep)
+	public static PQHeap Sort(PQHeap Q) 
 	{
-        int aux = rep.get(i).key;
-        Object aux2 = rep.get(i).data;
-		rep.set(i, new Element(rep.get(j).key, rep.get(j).data));
-		rep.set(j, new Element(aux, aux2));
-        return rep;
-	}
-
-	public static List<Element> Sort(List<Element> tmp) 
-	{
-		tmp = BuildMinHeap(tmp);
-		int l = tmp.size();
-		for (int i=tmp.size()-1; i>0; i--) 
+		Q = BuildMinHeap(Q);
+		int l = Q.size();
+		for (int i=Q.size()-1; i>0; i--) 
 		{
-			tmp = replace(0,i,tmp);
+			Q.replace(0,i);
 			l--;
-			tmp = MinHeapify(0,tmp,l);
+			Q.minHeapify(i, Q.size()-1);
 		}
-		return tmp;
+		return Q;
 	}
 
-	public static List<Element> BuildMinHeap(List<Element> tmp)
+	public static PQHeap BuildMinHeap(PQHeap Q)
 	{
-		for (int i=(int)Math.floor(tmp.size()/2)-1; i>-1; i--)
+		for (int i=(int)Math.floor(Q.size()/2)-1; i>-1; i--)
 		{
-			tmp = MinHeapify(i, tmp, tmp.size());
+			Q.minHeapify(i, Q.size()-1);
 		}
-		return tmp;
+		return Q;
 	}
-
-	
 
 } // class
 
