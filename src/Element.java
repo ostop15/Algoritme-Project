@@ -7,8 +7,4 @@ public class Element {
 		this.key = i;
 		this.data = o;
 	}
-
-	public Element(int i) {
-		// TODO Auto-generated constructor stub
-	}
 }
