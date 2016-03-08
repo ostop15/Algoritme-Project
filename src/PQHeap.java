@@ -2,29 +2,6 @@ import java.util.*;
 
 public class PQHeap implements PQ{
 	
-	public static void main(String[] args) {
-		PQHeap Q = new PQHeap(100);
-		Element e = new Element(1, null);
-		Element f = new Element(2, null);
-		Element g = new Element(3, null);
-		Element h = new Element(4, null);
-		Element ik = new Element(5, null);
-
-		Q.insert(e);
-		Q.insert(f);
-		Q.insert(g);
-		Q.insert(h);
-		Q.insert(ik);
-
-		
-		Q.insert(new Element(6,null));
-		Q.printAll();
-		
-		Q.extractMin();
-		Q.printAll();
-
-	}// end of main method
-	
 	private static ArrayList<Element> array;
 
 	public PQHeap(int maxElms) {
@@ -34,13 +11,14 @@ public class PQHeap implements PQ{
 	
 	@Override
 	public Element extractMin() {
+
 		Element min = array.get(0); // Store the first element
 		array.set(0, array.get(array.size()-1)); //Replace the first element with the last
 		array.remove(array.size()-1); // Delete the last element
 		minHeapify(0,array.size()-1); // Heapify the array
-		
+
 		return min;
-	}
+	} // end of extractMin method
 	
 
 	@Override
@@ -66,7 +44,7 @@ public class PQHeap implements PQ{
 		int left = 2*(i+1)-1;
 		int right = 2*(i+1);
 
-		if (left < heapsize && array.get(left).key < array.get(i).key) 
+		if (left <= heapsize && array.get(left).key < array.get(i).key) 
 		{
 		    smallest = left;
 		} 
@@ -75,7 +53,7 @@ public class PQHeap implements PQ{
 		    smallest = i;
 		}
 
-		if (right < heapsize && array.get(right).key < array.get(smallest).key) 
+		if (right <= heapsize && array.get(right).key < array.get(smallest).key) 
 		{
 		    smallest = right;
 		}
