@@ -1,101 +1,104 @@
 import java.util.*;
-import java.util.concurrent.PriorityBlockingQueue;
 
-public class PQHeap implements PQ, Comparable {
-
+public class PQHeap implements PQ{
+	
 	public static void main(String[] args) {
-		PQHeap hq = new PQHeap(5);
+		PQHeap Q = new PQHeap(100);
 		Element e = new Element(5, null);
-		Element f = new Element(1, null);
-		Element g = new Element(7, null);
-		Element h = new Element(33, null);
-		Element i = new Element(10, null);
-		Element j = new Element(12, null);
-		Element k = new Element(-1, null);
+		Element f = new Element(4, null);
+		Element g = new Element(3, null);
+		Element h = new Element(2, null);
+		Element ik = new Element(1, null);
 
-		hq.insert(e);
-		hq.insert(f);
+		Q.insert(e);
+		Q.insert(f);
+		Q.insert(g);
+		Q.insert(h);
+		Q.insert(ik);
 
-		for(int in = 0; in<hq.pq.size();in++){
-		System.out.println(hq.pq.remove());
-		}
-		//for(int i = 0; i <5;i++)
-		// Bruges kun til test
+		for(int i = 0; i < Q.size();i++)
+		System.out.println(Q.get(i));
+		
+		Q.insert(new Element(6,null));
+		System.out.println("\n\n\n");
+		for(int i = 0; i < Q.size();i++)
+		System.out.println(Q.get(i));
 
 	}// end of main method
 	
-	public PriorityQueue<Element> pq;
-
+	private static ArrayList<Element> array;
 	
-	public PQHeap(int maxElms) {
-		this.pq = new PriorityQueue<Element>(maxElms);
+	public int size(){
+		return array.size();
+	}
+	
+	public int get(int i){
+		return array.get(i).key;
 	}
 
-
-
+	public PQHeap(int maxElms) {
+		array = new ArrayList<>(maxElms);
+	}
+	
+	
 	@Override
 	public Element extractMin() {
-		Element min = pq.remove();
-		System.out.println(min.key);
+		Element min = array.get(0); // Store the first element
+		array.set(0, array.get(array.size()-1)); //Replace the first element with the last
+		array.remove(array.size()-1); // Delete the last element
+		minHeapify(0,array.size()-1);
+		
 		return min;
-		
-	}
-
-	
-	@Override
-	public void insert(Element e) {
-		this.pq.add(e);
-		
 	}
 	
 
-
-	private static int[] replace(int i, int smallest, int[] heap) {
-		int aux = heap[i];
-		heap[i] = heap[smallest];
-		heap[smallest] = aux;
-		System.out.printf("i: " + heap[i] + " " + "Smallest: " + heap[smallest]);
-		return heap;
-	}
-
-	private static int getLeft(int i) {
-		return 2 * i;
-
-	}
-
-	private static int getRight(int i) {
-		return (2 * i) + 1;
-
-	}
-
-	public void minHeapify(int i, int[] heap) {
-
-		int left = getLeft(i);
-		int right = getRight(i);
-		int smallest = i;
-
-		if (left <= heap.length && heap[left] < heap[i]) {
-			smallest = left;
-		} else {
-			smallest = i;
-		}
-
-		if (right <= heap.length && heap[right] < heap[i]) {
-			smallest = right;
-		}
-
-		if (smallest != i) {
-			replace(i, smallest, heap);
-			minHeapify(smallest, heap);
-		}
-	}
-
-
-
 	@Override
-	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
+	public void insert(Element e) {	
+		int i = array.size()-1; //index of the last element
+		int parent = (int) Math.floor(i/2);
+		array.add(e);
+		while ( i>0 && array.get(parent).key < array.get(i).key ){
+			replace(i,parent);
+			i = i-1;
+		}
 	}
+
+	public static ArrayList<Element> minHeapify(int i, int heapsize) 
+	{
+		
+		int smallest;
+		int left = 2*(i+1)-1;
+		int right = 2*(i+1)+1-1;
+
+		if (left < heapsize && array.get(left).key <= array.get(i).key) 
+		{
+		    smallest = left;
+		} 
+		else 
+		{
+		    smallest = i;
+		}
+
+		if (right < heapsize && array.get(right).key <= array.get(smallest).key) 
+		{
+		    smallest = right;
+		}
+
+		if (smallest != i) 
+		{
+		    replace(i, smallest);
+		    minHeapify(smallest, heapsize);
+		}
+		return array;
+	}// end of minHeapify
+	
+	
+	public static void replace( int child, int parent)
+	{
+        Element aux = array.get(child);
+		array.set(child, array.get(parent));
+		array.set(parent, aux);
+        
+	} // end of replace
 
 } // end of class

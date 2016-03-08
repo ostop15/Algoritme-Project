@@ -56,33 +56,7 @@ public class HeapSort
 		return tmp;
 	}
 
-	public static List<Element> MinHeapify(int i, List<Element> tmp, int heapsize) 
-	{
-		
-		int smallest;
-		int left = 2*(i+1)-1;
-		int right = 2*(i+1)+1-1;
+	
 
-		if (left < heapsize && tmp.get(left).key <= tmp.get(i).key) 
-		{
-		    smallest = left;
-		} 
-		else 
-		{
-		    smallest = i;
-		}
-
-		if (right < heapsize && tmp.get(right).key <= tmp.get(smallest).key) 
-		{
-		    smallest = right;
-		}
-
-		if (smallest != i) 
-		{
-		    tmp = replace(i, smallest, tmp);
-		    MinHeapify(smallest, tmp, heapsize);
-		}
-		return tmp;
-	}
 } // class
 
