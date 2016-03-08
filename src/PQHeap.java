@@ -16,8 +16,6 @@ public class PQHeap implements PQ{
 		Q.insert(h);
 		Q.insert(ik);
 
-		for(int i = 0; i < Q.size();i++)
-		System.out.println(Q.get(i));
 		
 		Q.insert(new Element(6,null));
 		System.out.println("\n\n\n");
@@ -58,7 +56,11 @@ public class PQHeap implements PQ{
 		int i = array.size()-1; //index of the last element
 		int parent = (int) Math.floor(i/2); // index of parent
 
-		while ( i>0 && array.get(parent).key < array.get(i).key ){
+		while ( i>0 && array.get(parent).key > array.get(i).key ){
+			System.out.println();
+			for(int j = 0; j < array.size();j++)
+				System.out.println(array.get(j).key);			
+			
 			replace(i,parent);
 			i = parent;
 			parent = (int) Math.floor(i/2);
