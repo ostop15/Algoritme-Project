@@ -54,12 +54,14 @@ public class PQHeap implements PQ{
 
 	@Override
 	public void insert(Element e) {	
+		array.add(e); // add the element to the back of the array
 		int i = array.size()-1; //index of the last element
-		int parent = (int) Math.floor(i/2);
-		array.add(e);
+		int parent = (int) Math.floor(i/2); // index of parent
+
 		while ( i>0 && array.get(parent).key < array.get(i).key ){
 			replace(i,parent);
-			i = i-1;
+			i = parent;
+			parent = (int) Math.floor(i/2);
 		}
 	}
 
