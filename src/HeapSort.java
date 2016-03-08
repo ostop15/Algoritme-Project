@@ -7,7 +7,7 @@ public class HeapSort
         List<Element> arr = new ArrayList<Element>();
 		Scanner sc = new Scanner(System.in);
 		
-		System.out.println("Please insert numbers to sort:");
+		System.out.println("Please input numbers to sort:");
 		
 		while (sc.hasNextInt()) {
 	    	arr.add(new Element(sc.nextInt(), null));
