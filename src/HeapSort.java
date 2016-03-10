@@ -1,5 +1,16 @@
 /**
- * @author Osman Toplica, Amar Djebbara, Asbjørn Mansa Jensen
+ 												@authors
+  							+----------------------------------------------------+
+  							|													 |
+  							|	Osman Toplica -        Ostop15@student.sdu.dk	 |
+  							|													 |
+    						|	Amar Djebbara -        Amdje10@student.sdu.dk	 |
+      						|													 |
+  							|	Asbjørn Mansa Jensen - Asjen15@student.sdu.dk	 |
+     						|													 |
+ 							+----------------------------------------------------+
+
+ *
  */
 
 import java.util.*;
