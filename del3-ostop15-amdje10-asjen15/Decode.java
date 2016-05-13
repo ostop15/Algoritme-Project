@@ -37,36 +37,37 @@ public class Decode {
 		String code = "";
 		int tmp;
 		boolean swh = false;
+		// Reads bit until the end of the file
 		while((bi = in.readBit()) != -1)
 		{
 			// Finds frequency for 256 values
 		    if(c2 < 256)
 		    {
-		    	// Reads swapbit if 0 return zero if 1 run else statement in next iteration
+		    	// Reads tagbit, if 0 return zero, if 1 run else statement in next iteration
 		        if (!swh)
 		        {
 		            if(bi == 0)
 		            {
-		                arr[c2] = 0;
+		                arr[c2] = 0; // add frequency to value
 		                c2 += 1;
 		            }
 		            else
 		            {
-		                swh = true;
+		                swh = true; // start reading 8bit
 		            }
 		        }
 		        // Gets the frequency in 8bit
 		        else
 		        {
-		            by <<=  1;
-		            by |= bi;
-		            if(c >= 7)
+		            by <<=  1; // Left shift once
+		            by |= bi; // adds bit by bitwise or
+		            if(c >= 7) // if eight bits have been readen
 		            {
-		                arr[c2] = by;
-		                by = 0;
+		                arr[c2] = by; // add frequency to value
+		                by = 0; 
 		                c = 0;
 		                c2 += 1;
-		                swh = false;
+		                swh = false; // return to reading tagbit
 		            }
 		            else
 		            {
@@ -88,12 +89,12 @@ public class Decode {
 		{
 		    if(i > 0)
 		    {
-		        que.insert(new Element(i, new Node(c)));
+		        que.insert(new Element(i, new Node(c))); // Inserts element to PQ with the frequency as key and a node with the value ad key
 		    }
 		    c++;
 		}
 		
-		// Huffmans algorithm
+		// Huffmans algorithm (As explain in textbook)
 		Node x;
 		Node y;
 		Node z;
@@ -110,31 +111,36 @@ public class Decode {
 		
 		Node root = (Node) que.extractMin().data;
 		
-		// Gets decoded message an writes it to file args[1]
+		// Gets decoded message and writes it to file args[1]
 		String mess = getMessage(code, root, IntStream.of(arr).sum());
-		String[] ss = mess.split(" ");
+		String[] ss = mess.split(" "); // Splits the string to get individual values
 		for (String s : ss)
 		{
-		    try {
-		    tmp = Integer.parseInt(s);
-		    for (int j = 128; j > 0; j/=2)
+		    try 
 		    {
-		        if (tmp - j >= 0)
-		        {
-		            out.writeBit(1);
-		            tmp -= j;
-		        }
-		        else
-		        {
-		            out.writeBit(0);
-		        }
+				tmp = Integer.parseInt(s);
+				for (int j = 128; j > 0; j/=2) // Writes value to file
+				{
+				    if (tmp - j >= 0)
+				    {
+				        out.writeBit(1);
+				        tmp -= j;
+				    }
+				    else
+				    {
+				        out.writeBit(0);
+				    }
 
-		        if(j == 1)
-		        {
-		            break;
-		        }
-		    }  
-		    } catch(NumberFormatException | IOException e) { System.out.println("Error on: " + s);}
+				    if(j == 1)
+				    {
+				        break;
+				    }
+				}  
+		    } 
+		    catch(NumberFormatException | IOException e) 
+		    { 
+		    	System.out.println("Error on: " + s);
+		    }
 		}
 		    
 		// Close the streams

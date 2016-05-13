@@ -32,13 +32,14 @@ public class Encode
 	    int c = 0;
 	    int by = 0;
 	    int[] arr = new int[256];
+		// Reads bit until the end of the file
 	    while((bi = in.readBit()) != -1)
 	    {
-	        by <<=  1;
-	        by |= bi;
-	        if(c >= 7)
+	    	by <<=  1; // Left shift once
+            by |= bi; // adds bit by bitwise or
+            if(c >= 7) // if eight bits have been readen
 	        {
-	            arr[by] += 1;
+	            arr[by] += 1; // adds one apperance to frequency
 	            by = 0;
 	            c = 0;
 	        }
@@ -55,13 +56,13 @@ public class Encode
 	    int jcmj;
 	    for (int i : arr)
 	    {
-	        if(i > 0)
+	        if(i > 0) 
 	        {
-	            que.insert(new Element(i, new Node(c)));
+	            que.insert(new Element(i, new Node(c))); // Inserts element to PQ with the frequency as key and a node with the value ad key
 	            
 	            jc = i;
-	            out.writeBit(1);
-	            for (int j = 128; j > 0; j/=2)
+	            out.writeBit(1); // Write tagbit for 8bit
+	            for (int j = 128; j > 0; j/=2) // writes value to file
 	            {
 	                jcmj = jc - j;
 	                if (jcmj >= 0)
@@ -80,14 +81,14 @@ public class Encode
 	                }
 	            }  
 	        }
-	        else
+	        else // If the frequency is less than 1, 0 is written as tagbit to the file
 	        {
 	            out.writeBit(0);
 	        }
 	        c++;
 	    }
 	    
-	    // Huffmans algorithm
+	    // Huffmans algorithm (As explain in textbook)
 	    Node x;
 	    Node y;
 	    Node z;
@@ -103,19 +104,21 @@ public class Encode
 	    }
 	    Node root = (Node) que.extractMin().data;
 	    
-		// Reads file again, gets encoding and writes it to file args[1]
+		// Reads file again
 		inFile = new FileInputStream(args[0]);
 		in = new BitInputStream(inFile);
 	    c = 0;
 	    by = 0;
+	    // Gets encoding
 	    String[] codes = getBitCodes(root);
+		// Reads bit until the end of the file
 	    while((bi = in.readBit()) != -1)
 	    {
-	        by <<=  1;
-	        by |= bi;
-	        if(c >= 7)
+	    	by <<=  1; // Left shift once
+            by |= bi; // adds bit by bitwise or
+            if(c >= 7) // if eight bits have been readen
 	        {
-	            for (String b : codes[by].split(""))
+	            for (String b : codes[by].split("")) // Splits code to get 0's and 1's and writes to file
 	            {
 	                out.writeBit(Integer.parseInt(b));
 	            }
@@ -138,17 +141,17 @@ public class Encode
 	{
 	    Node x = n;
 	    
-	    if(x == null) 
+	    if(x == null) // if the node does not exist the an empty array is returned
 	    {
 	        return arrCode;
 	    }
 	    
-	    if(x.leftChild != null) 
+	    if(x.leftChild != null) // Goes to left child it if exists
 	    {
 	        getBitCodesR(x.leftChild, "0");
 	    }
 	    
-	    if(x.rightChild != null) 
+	    if(x.rightChild != null) // Goes to right chil it if exists
 	    {
 	        getBitCodesR(x.rightChild, "1");
 	    }
@@ -160,22 +163,22 @@ public class Encode
 	{
 		Node x = n;
 		
-		if(x == null) 
+		if(x == null) // if the node does not exist the an empty array is returned
 		{
 		    return arrCode;
 		}
 		
-		if(x.leftChild != null) 
+		if(x.leftChild != null) // Goes to left child it if exists
 		{
 		    getBitCodesR(x.leftChild, dir + "0");
 		}
 		
-		if(x.rightChild != null) 
+		if(x.rightChild != null) // Goes to right chil it if exists
 		{
 		    getBitCodesR(x.rightChild, dir + "1");
 		}
 		
-		if (x.leftChild == null && x.rightChild == null)
+		if (x.leftChild == null && x.rightChild == null) // If there is no children the key value is added to the shared array
 		{
 		    arrCode[x.key] = dir;
 		}

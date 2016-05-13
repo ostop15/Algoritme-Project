@@ -1,3 +1,16 @@
+/**
+ 												@authors
+  							+----------------------------------------------------+
+  							|													 |
+  							|	Osman Toplica -        Ostop15@student.sdu.dk	 |
+  							|													 |
+    						|	Amar Djebbara -        Amdje10@student.sdu.dk	 |
+      						|													 |
+  							|	Asbjørn Mansa Jensen - Asjen15@student.sdu.dk	 |
+     						|													 |
+ 							+----------------------------------------------------+
+
+**/
 
 import java.io.IOException;
 import java.io.OutputStream;
