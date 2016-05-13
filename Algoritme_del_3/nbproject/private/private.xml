@@ -3,12 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/bamz/School/DM507/Algoritme%20del%203/src/MainClass.java</file>
-            <file>file:/home/bamz/School/DM507/Algoritme%20del%203/src/Encode.java</file>
-            <file>file:/home/bamz/School/DM507/Algoritme%20del%203/src/BitOutputStream.java</file>
-            <file>file:/home/bamz/School/DM507/Algoritme%20del%203/src/Decode.java</file>
-            <file>file:/home/bamz/School/DM507/Algoritme%20del%203/src/Node.java</file>
-            <file>file:/home/bamz/School/DM507/Algoritme%20del%203/src/BitInputStream.java</file>
+            <file>file:/home/bamz/School/DM507/Algoritme/Algoritme_del_3/src/Encode.java</file>
+            <file>file:/home/bamz/School/DM507/Algoritme/Algoritme_del_3/src/MainClass.java</file>
+            <file>file:/home/bamz/School/DM507/Algoritme/Algoritme_del_3/src/Node.java</file>
+            <file>file:/home/bamz/School/DM507/Algoritme/Algoritme_del_3/src/PQHeap.java</file>
+            <file>file:/home/bamz/School/DM507/Algoritme/Algoritme_del_3/src/Element.java</file>
+            <file>file:/home/bamz/School/DM507/Algoritme/Algoritme_del_3/src/Decode.java</file>
+            <file>file:/home/bamz/School/DM507/Algoritme/Algoritme_del_3/src/BitInputStream.java</file>
+            <file>file:/home/bamz/School/DM507/Algoritme/Algoritme_del_3/src/BitOutputStream.java</file>
         </group>
     </open-files>
 </project-private>

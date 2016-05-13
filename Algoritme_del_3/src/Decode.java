@@ -1,5 +1,7 @@
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.stream.IntStream;
 
 public class Decode { 
     public static void main(String[] args) throws Exception {
@@ -13,59 +15,84 @@ public class Decode {
 	BitOutputStream out = new BitOutputStream(outFile);
 
 	// Gets character frequencies
+        long tStart = System.currentTimeMillis();
         int bi;
         int c = 0;
-        int ch = 0;
-        int by = 00000000;
+        int c2 = 0;
+        int by = 0;
         int[] arr = new int[256];
-        int track = 0;
         String code = "";
+        int tmp;
+        boolean swh = false;
         while((bi = in.readBit()) != -1)
         {
-            by <<=  1;
-            by |= bi;
-            if(c >= 7)
+            if(c2 < 256)
             {
-                if(by == 33 && track == 92)
+                if (!swh)
                 {
-                    arr[track] -= 1;
-                    ch -= 1;
-                    while((bi = in.readBit()) != -1)
+                    if(bi == 0)
                     {
-                        code += String.valueOf(bi);
+                        arr[c2] = 0;
+                        c2 += 1;
                     }
-                    break;
+                    else
+                    {
+                        swh = true;
+                    }
                 }
-                track = by;
-                arr[by] += 1;
-                by = 00000000;
-                c = 0;
-                ch += 1;
+                else
+                {
+                    by <<=  1;
+                    by |= bi;
+                    if(c >= 7)
+                    {
+                        //System.out.println(by);
+                        arr[c2] = by;
+                        by = 0;
+                        c = 0;
+                        c2 += 1;
+                        swh = false;
+                    }
+                    else
+                    {
+                        c += 1;
+                    }
+                }
             }
             else
             {
-                c += 1;
+                code += String.valueOf(bi);
             }
         }
+        System.out.println("Decode: Getting frequencies took " + (System.currentTimeMillis() - tStart) + "ms" );
+        
         // Inserts frequencies to PQ
+        tStart = System.currentTimeMillis();
         PQHeap que = new PQHeap(256);
         c = 0;
         for (int i : arr)
         {
+            //System.out.print(i + " ");
             if(i > 0)
             {
+                //System.out.println(c + ": " + i);
                 que.insert(new Element(i, new Node(c)));
             }
             c++;
         }
+        System.out.println("Decode: Inserting to PQ took " + (System.currentTimeMillis() - tStart) + "ms" );
         
         // Huffmans algorithm
+        tStart = System.currentTimeMillis();
+        Node x;
+        Node y;
+        Node z;
         int length = que.size()-1;
         for (int i = 0; i < length; i++)
         {
-            Node x = (Node) que.extractMin().data;
-            Node y = (Node) que.extractMin().data;
-            Node z = new Node(x.key + y.key); 
+            x = (Node) que.extractMin().data;
+            y = (Node) que.extractMin().data;
+            z = new Node(x.key + y.key); 
             z.leftChild = x;
             z.rightChild = y;
             //System.out.println(x.toString());
@@ -76,12 +103,17 @@ public class Decode {
         // Get root
         Node root = (Node) que.extractMin().data;
         //System.out.println(root.toString());
+        System.out.println("Decode: Implementing Huffman took " + (System.currentTimeMillis() - tStart) + "ms" );
+        
         //System.out.println(code);
-        String mess = getMessage(code, root, ch);
+        String mess = getMessage(code, root, IntStream.of(arr).sum());
+        //System.out.println(mess);
         String[] ss = mess.split(" ");
-        int tmp;
+        tStart = System.currentTimeMillis();
         for (String s : ss)
         {
+            //System.out.println(s);
+            try {
             tmp = Integer.parseInt(s);
             for (int j = 128; j > 0; j/=2)
             {
@@ -100,7 +132,9 @@ public class Decode {
                     break;
                 }
             }  
+            } catch(NumberFormatException | IOException e) { System.out.println("Error on: " + s);}
         }
+        System.out.println("Decode: Decoding took " + (System.currentTimeMillis() - tStart) + "ms" );
         
 	// Close the streams
 	in.close();
@@ -108,16 +142,16 @@ public class Decode {
 
     }
     
-    private static String getMessage(String code, Node n, int ch)
+    private static String getMessage(String code, Node n, int length)
     {
         String k = code;
         String f;
         String s = "";
-        Node x = n;
         int c = 0;
+        Node x = n;
         for (int i = 0; i < code.length(); i++)
         {
-            if(c >= ch)
+            if (c >= length)
             {
                 break;
             }
@@ -135,11 +169,12 @@ public class Decode {
             else
             {
                 s += x.key + " ";
-                c += 1;
                 i -= 1;
                 x = n;
+                c += 1;
             }
         }
+        
         return s;
     }
 }

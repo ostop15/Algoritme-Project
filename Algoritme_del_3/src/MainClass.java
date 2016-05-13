@@ -10,7 +10,7 @@
  */
 public class MainClass {
     public static void main(String[] args) throws Exception {
-        Encode.main(new String[]{"Dep.png", "coded"});
-        Decode.main(new String[]{"coded", "Dep2.png"});
+        Encode.main(new String[]{"in", "coded"});
+        Decode.main(new String[]{"coded", "out"});
     }
 }

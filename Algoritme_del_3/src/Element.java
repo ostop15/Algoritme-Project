@@ -1,9 +1,9 @@
 
 public class Element {
-	public int key;
+	public long key;
 	public Object data;
 
-	public Element(int i, Object o) {
+	public Element(long i, Object o) {
 		this.key = i;
 		this.data = o;
 	}

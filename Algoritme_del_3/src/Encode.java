@@ -11,11 +11,12 @@ public class Encode {
 	// Wrap the new bit streams around the input/output streams.
 	BitInputStream in = new BitInputStream(inFile);
 	BitOutputStream out = new BitOutputStream(outFile);
-
+        
+        long tStart = System.currentTimeMillis();
 	// Gets character frequencies
         int bi;
         int c = 0;
-        int by = 00000000;
+        int by = 0;
         int[] arr = new int[256];
         while((bi = in.readBit()) != -1)
         {
@@ -23,8 +24,9 @@ public class Encode {
             by |= bi;
             if(c >= 7)
             {
+                //System.out.print(by + " ");
                 arr[by] += 1;
-                by = 00000000;
+                by = 0;
                 c = 0;
             }
             else
@@ -32,52 +34,63 @@ public class Encode {
                 c += 1;
             }
         }
-        if (c != 0)
-        {
-            arr[by] += 1;
-        }
+        System.out.println("Encode: Getting frequencies took " + (System.currentTimeMillis() - tStart) + "ms" );
         
+        
+        
+        tStart = System.currentTimeMillis();
         // Inserts frequencies to PQ
         PQHeap que = new PQHeap(256);
         c = 0;
         int jc;
+        int jcmj;
         for (int i : arr)
         {
+            //System.out.print(i + " ");
             if(i > 0)
             {
                 que.insert(new Element(i, new Node(c)));
-                for (int h = 0; h < i; h++)
+                jc = i;
+                //8bit value
+                out.writeBit(1);
+                for (int j = 128; j > 0; j/=2)
                 {
-                    jc = c;
-                    for (int j = 128; j > 0; j/=2)
+                    jcmj = jc - j;
+                    if (jcmj >= 0)
                     {
-                        if (jc - j >= 0)
-                        {
-                            out.writeBit(1);
-                            jc -= j;
-                        }
-                        else
-                        {
-                            out.writeBit(0);
-                        }
+                        out.writeBit(1);
+                        jc = jcmj;
+                    }
+                    else
+                    {
+                        out.writeBit(0);
+                    }
 
-                        if(j == 1)
-                        {
-                            break;
-                        }
-                    }  
-                }
+                    if(j == 1)
+                    {
+                        break;
+                    }
+                }  
+            }
+            else
+            {
+                out.writeBit(0);
             }
             c++;
         }
+        System.out.println("Encode: Inserting to PQ took " + (System.currentTimeMillis() - tStart) + "ms" );
         
+        tStart = System.currentTimeMillis();
         // Huffmans algorithm
+        Node x;
+        Node y;
+        Node z;
         int length = que.size()-1;
         for (int i = 0; i < length; i++)
         {
-            Node x = (Node) que.extractMin().data;
-            Node y = (Node) que.extractMin().data;
-            Node z = new Node(x.key + y.key); 
+            x = (Node) que.extractMin().data;
+            y = (Node) que.extractMin().data;
+            z = new Node(x.key + y.key); 
             z.leftChild = x;
             z.rightChild = y;
             //System.out.println(x.toString());
@@ -88,46 +101,29 @@ public class Encode {
         // Get root
         Node root = (Node) que.extractMin().data;
         //System.out.println(root.toString());
+        System.out.println("Encode: Implementing Huffman took " + (System.currentTimeMillis() - tStart) + "ms" );
         
-	// Write tag for PQ. Tag is \!
-	out.writeBit(0);
-	out.writeBit(1);
-	out.writeBit(0);
-	out.writeBit(1);
-	out.writeBit(1);
-	out.writeBit(1);
-	out.writeBit(0);
-	out.writeBit(0);
-        
-	out.writeBit(0);
-	out.writeBit(0);
-	out.writeBit(1);
-	out.writeBit(0);
-	out.writeBit(0);
-	out.writeBit(0);
-	out.writeBit(0);
-	out.writeBit(1);
-        
+        tStart = System.currentTimeMillis();
 	// Read file again and get encoding
-        inFile = new FileInputStream(args[0]);
+        
+	inFile = new FileInputStream(args[0]);
 	in = new BitInputStream(inFile);
         c = 0;
-        by = 00000000;
-        String s;
+        by = 0;
+        String[] codes = getBitCodes(root);
         while((bi = in.readBit()) != -1)
         {
             by <<=  1;
             by |= bi;
             if(c >= 7)
             {
-                s = getBitCodePart(by, root, 2);
-                //System.out.print(s);
-                String[] sp = s.split("");
-                for (String b : sp)
+                //System.out.print(" " + by + " ");
+                for (String b : codes[by].split(""))
                 {
+                    //System.out.print(b);
                     out.writeBit(Integer.parseInt(b));
                 }
-                by = 00000000;
+                by = 0;
                 c = 0;
             }
             else
@@ -135,50 +131,60 @@ public class Encode {
                 c += 1;
             }
         }
-        if (c != 0)
-        {
-            s = getBitCodePart(by, root, 2);
-            System.out.print(s);
-            String[] sp = s.split("");
-            for (String b : sp)
-            {
-                out.writeBit(Integer.parseInt(b));
-            }
-        }        
+        System.out.println("Encode: Generating code took " + (System.currentTimeMillis() - tStart) + "ms" );
+        
 	// Close the streams
 	in.close();
 	out.close();
-
     }
     
-    private static String getBitCodePart(int key, Node n, int direction)
+    private static final String[] arrCode = new String[256];
+    private static String[] getBitCodes(Node n)
     {
-        int k = key;
         Node x = n;
-        String s = "";
         
         if(x == null) 
         {
-            return s;
+            return arrCode;
         }
         
         if(x.leftChild != null) 
         {
-            s += getBitCodePart(k, x.leftChild, 0);
+            getBitCodesR(x.leftChild, "0");
         }
         
         if(x.rightChild != null) 
         {
-            s += getBitCodePart(k, x.rightChild, 1);
+            getBitCodesR(x.rightChild, "1");
         }
         
-        if(direction==2 || "".equals(s) && x.key != k)
+        return arrCode;      
+    }
+    
+    private static String[] getBitCodesR(Node n, String dir)
+    {
+        Node x = n;
+        
+        if(x == null) 
         {
-            return s;
+            return arrCode;
         }
-        else
+        
+        if(x.leftChild != null) 
         {
-            return direction + s;
+            getBitCodesR(x.leftChild, dir + "0");
         }
+        
+        if(x.rightChild != null) 
+        {
+            getBitCodesR(x.rightChild, dir + "1");
+        }
+        
+        if (x.leftChild == null && x.rightChild == null)
+        {
+            arrCode[x.key] = dir;
+        }
+        
+        return arrCode;      
     }
 }
